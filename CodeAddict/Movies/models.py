@@ -20,3 +20,17 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Ticket(models.Model):
+    movie = models.ForeignKey(
+        Movie, on_delete=models.CASCADE, related_name='tickets')
+
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='tickets')
+
+    class Meta():
+        ordering = ['movie__title', 'profile__user__first_name', ]
+
+    def __str__(self):
+        return f"{self.profile}'s {self.movie} ticket"
