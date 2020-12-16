@@ -11,7 +11,7 @@ class Profile(models.Model):
         ordering = ['user', ]
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 @receiver(post_save, sender=User)
