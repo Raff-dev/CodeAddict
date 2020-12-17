@@ -12,6 +12,7 @@ router.register('Profiles', Profiles, basename='Profiles')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/register', Register.as_view()),
     path('api/', include((router.urls, 'Movies'), namespace='Movies')),
     path('api/', include((router.urls, 'Profiles'), namespace='Profiles')),
 ]
