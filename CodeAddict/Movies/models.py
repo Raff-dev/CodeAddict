@@ -8,9 +8,9 @@ class Movie(models.Model):
 
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
-    description = models.CharField(max_length=300, null=True)
+    description = models.CharField(max_length=300, blank=True, null=True)
 
-    rating = models.IntegerField(null=True, validators=[
+    rating = models.IntegerField(default=5, validators=[
         MaxValueValidator(10),
         MinValueValidator(1)
     ])
@@ -29,8 +29,15 @@ class Ticket(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='tickets')
 
+    buy_timestamp = models.DateTimeField(auto_now_add=True)
+    update_timestamp = models.DateTimeField(auto_now=True)
+
     class Meta():
-        ordering = ['movie__title', 'profile__user__first_name', ]
+        ordering = [
+            'buy_timestamp',
+            'movie__title',
+            'profile__user__first_name',
+        ]
 
     def __str__(self):
         return f"{self.profile}'s {self.movie} ticket"
