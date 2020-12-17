@@ -15,6 +15,11 @@ urlpatterns = [
     path('api/register', Register.as_view()),
     path('api/', include((router.urls, 'Movies'), namespace='Movies')),
     path('api/', include((router.urls, 'Profiles'), namespace='Profiles')),
+
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(),
+         name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(),
+         name='token_refresh'),
 ]
 
 
