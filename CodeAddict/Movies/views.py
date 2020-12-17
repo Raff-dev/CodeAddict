@@ -17,13 +17,20 @@ class Movies(ViewSet):
     @action(methods=['get'], detail=True)
     def get_movie(self, request, *args, **kwargs):
         movie = Movie.objects.filter(pk=kwargs['pk']).first()
-        result = MovieSerializer(movie).data
-
+        result = {
+            'Title': movie.title,
+            'Price': movie.price,
+            'Rating': movie.rating,
+            'Description': movie.description
+        }
         return Response(data=result, status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False)
     def get_movies(self, request, *args, **kwargs):
         movies = Movie.objects.all()
-        result = [MovieSerializer(movie).data for movie in movies]
+        result = [{
+            'Title': movie.title,
+            'Price': movie.price
+        } for movie in movies]
 
         return Response(data=result, status=status.HTTP_200_OK)
