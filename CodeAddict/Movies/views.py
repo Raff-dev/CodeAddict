@@ -9,7 +9,6 @@ from django.core.serializers import serialize
 from django.http import JsonResponse
 from Profiles.models import Profile
 from Movies.models import Movie, Ticket
-from Movies.serializers import MovieSerializer
 
 
 class Movies(ViewSet):
