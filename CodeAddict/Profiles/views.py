@@ -33,3 +33,36 @@ class Register(generics.GenericAPIView):
             "message": "User Created Successfully.  Now perform Login to get your token",
         }
         return Response(data=result, status=HTTP_201_CREATED)
+
+
+class Profiles(ViewSet):
+    permission_classes = [IsAuthenticated, ]
+
+    @action(methods=['get'], detail=False)
+    def get_tickets(self, request, *args, **kwargs):
+        profile = request.user.profile
+        tickets = profile.tickets.all()
+
+        result = [{
+            'Movie title': ticket.movie.title,
+            'Buy timestamp': ticket.buy_timestamp,
+        } for ticket in tickets]
+
+        return Response(data=result, status=status.HTTP_200_OK)
+
+    @action(methods=['post'], detail=True)
+    def buy_ticket(self, request, pk=None, *args, **kwargs):
+        try:
+            profile = request.user.profile
+            movie = Movie.objects.filter(pk=pk).first()
+            ticket = Ticket.objects.create(profile=profile, movie=movie)
+
+            result = {
+                'Movie title': ticket.movie.title,
+                'Buy timestamp': ticket.buy_timestamp,
+            }
+            return Response(data=result, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
